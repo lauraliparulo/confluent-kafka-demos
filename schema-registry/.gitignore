@@ -3,6 +3,10 @@
 .gradle/
 build/
 out/
+# eclipse
+.project
+.settings
+.classpath
 
 streams.properties
 confluent.properties
