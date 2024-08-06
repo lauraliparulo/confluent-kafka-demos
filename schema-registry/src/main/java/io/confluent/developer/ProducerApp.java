@@ -37,11 +37,6 @@ public class ProducerApp {
         // Setting schema auto-registration to false since we already registered the schema manually following best practice
         producerConfigs.put(AbstractKafkaSchemaSerDeConfig.AUTO_REGISTER_SCHEMAS, false);
 
-        // Duplication of configs loaded from confluent.properties to emphasize what's needed to use SchemaRegistry
-      //  producerConfigs.put("schema.registry.url",properties.get("schema.registry.url"));
-       // producerConfigs.put("basic.auth.credentials.source", "USER_INFO");
-       // producerConfigs.put("basic.auth.user.info", properties.get("basic.auth.user.info"));
-
         System.out.printf("Producer now configured for using SchemaRegistry %n");
         try (final Producer<String, Purchase> producer = new KafkaProducer<>(producerConfigs)) {
             String topic = "proto-purchase";
