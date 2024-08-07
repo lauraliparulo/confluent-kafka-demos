@@ -53,6 +53,7 @@ public class StreamsJoin {
         SpecificAvroSerde<CombinedOrder> combinedSerde = getSpecificAvroSerde(configMap);
         SpecificAvroSerde<User> userSerde = getSpecificAvroSerde(configMap);
 
+        //Create the ValueJoiner for the stream-table join:
         ValueJoiner<ApplianceOrder, ElectronicOrder, CombinedOrder> orderJoiner =
                 (applianceOrder, electronicOrder) -> CombinedOrder.newBuilder()
                         .setApplianceOrderId(applianceOrder.getOrderId())
@@ -79,13 +80,16 @@ public class StreamsJoin {
         KTable<String, User> userTable =
                 builder.table(tableInput, Materialized.with(Serdes.String(), userSerde));
 
-        KStream<String, CombinedOrder> combinedStream = null;
+
         // create a Join between the applianceStream and the electronicStream
         // using the ValueJoiner created above, orderJoiner gets you the correct value type of CombinedOrder
         // You want to join records within 30 minutes of each other HINT: JoinWindows and Duration.ofMinutes
         // Add the correct Serdes for the join state stores remember both sides have same key type
         // HINT: StreamJoined and Serdes.String  and Serdes for the applianceStream and electronicStream created above
 
+        KStream<String, CombinedOrder> combinedStream =  applianceStream.join(electronicStream, orderJoiner, JoinWindows.of(Duration.ofMinutes(30)),
+                                                        StreamJoined.with(Serdes.String(), applianceSerde, electronicSerde))
+                                                        .peek((key, value) -> System.out.println("Stream-Stream Join record key " + key + " value " + value));
         // Optionally add this statement after the join to see the results on the console
         // .peek((key, value) -> System.out.println("Stream-Stream Join record key " + key + " value " + value));
 
@@ -100,6 +104,13 @@ public class StreamsJoin {
 
         // .peek((key, value) -> System.out.println("Stream-Table Join record key " + key + " value " + value))
         // .to(outputTopic, Produced.with(Serdes.String(), combinedSerde));
+
+        combinedStream.leftJoin(
+                userTable,
+                enrichmentJoiner,
+                Joined.with(Serdes.String(), combinedSerde, userSerde))
+            .peek((key, value) -> System.out.println("Stream-Table Join record key " + key + " value " + value))
+            .to(outputTopic, Produced.with(Serdes.String(), combinedSerde));
 
         try (KafkaStreams kafkaStreams = new KafkaStreams(builder.build(), streamsProps)) {
             final CountDownLatch shutdownLatch = new CountDownLatch(1);
