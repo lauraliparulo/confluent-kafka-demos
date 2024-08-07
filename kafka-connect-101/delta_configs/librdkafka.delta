@@ -1,0 +1,7 @@
+bootstrap.servers="pkc-6ojv2.us-west4.gcp.confluent.cloud:9092"
+security.protocol=SASL_SSL
+sasl.mechanisms=PLAIN
+sasl.username="7ZWBHHJ3P4WW6GRM"
+sasl.password="C84Lvbz0/FZEXT6fh2HqxYcYqk3xjPsgim+gwpjGIa1uavXKoJ2BqDxgawDdmp5c"
+schema.registry.url="https://psrc-8vyvr.eu-central-1.aws.confluent.cloud"
+basic.auth.user.info="AJJH5WDEAXUMZOCD:HNbQnmFDLu/WB4b2o7JULmjmC27c9kRPbXCmNv8kaIIlbsxY5eyCFPe14tuoLNBE"

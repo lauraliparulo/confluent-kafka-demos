@@ -1,0 +1,8 @@
+kafkastore.bootstrap.servers=pkc-6ojv2.us-west4.gcp.confluent.cloud:9092
+kafkastore.security.protocol=SASL_SSL
+kafkastore.sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username='7ZWBHHJ3P4WW6GRM' password='C84Lvbz0/FZEXT6fh2HqxYcYqk3xjPsgim+gwpjGIa1uavXKoJ2BqDxgawDdmp5c';
+kafkastore.sasl.mechanism=PLAIN
+kafkastore.client.dns.lookup=use_all_dns_ips
+kafkastore.session.timeout.ms=45000
+kafkastore.acks=all
+kafkastore.basic.auth.user.info=AJJH5WDEAXUMZOCD:HNbQnmFDLu/WB4b2o7JULmjmC27c9kRPbXCmNv8kaIIlbsxY5eyCFPe14tuoLNBE

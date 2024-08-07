@@ -1,0 +1,36 @@
+# Configuration for embedded admin client
+replication.factor=3
+config.storage.replication.factor=3
+offset.storage.replication.factor=3
+status.storage.replication.factor=3
+
+bootstrap.servers=pkc-6ojv2.us-west4.gcp.confluent.cloud:9092
+security.protocol=SASL_SSL
+sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username='7ZWBHHJ3P4WW6GRM' password='C84Lvbz0/FZEXT6fh2HqxYcYqk3xjPsgim+gwpjGIa1uavXKoJ2BqDxgawDdmp5c';
+sasl.mechanism=PLAIN
+
+# Configuration for embedded producer
+producer.security.protocol=SASL_SSL
+producer.sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username='7ZWBHHJ3P4WW6GRM' password='C84Lvbz0/FZEXT6fh2HqxYcYqk3xjPsgim+gwpjGIa1uavXKoJ2BqDxgawDdmp5c';
+producer.sasl.mechanism=PLAIN
+
+# Configuration for embedded consumer
+consumer.security.protocol=SASL_SSL
+consumer.sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username='7ZWBHHJ3P4WW6GRM' password='C84Lvbz0/FZEXT6fh2HqxYcYqk3xjPsgim+gwpjGIa1uavXKoJ2BqDxgawDdmp5c';
+consumer.sasl.mechanism=PLAIN
+
+# Configuration for embedded producer.confluent.monitoring.interceptor
+producer.confluent.monitoring.interceptor.security.protocol=SASL_SSL
+producer.confluent.monitoring.interceptor.sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username='7ZWBHHJ3P4WW6GRM' password='C84Lvbz0/FZEXT6fh2HqxYcYqk3xjPsgim+gwpjGIa1uavXKoJ2BqDxgawDdmp5c';
+producer.confluent.monitoring.interceptor.sasl.mechanism=PLAIN
+
+# Configuration for embedded consumer.confluent.monitoring.interceptor
+consumer.confluent.monitoring.interceptor.security.protocol=SASL_SSL
+consumer.confluent.monitoring.interceptor.sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username='7ZWBHHJ3P4WW6GRM' password='C84Lvbz0/FZEXT6fh2HqxYcYqk3xjPsgim+gwpjGIa1uavXKoJ2BqDxgawDdmp5c';
+consumer.confluent.monitoring.interceptor.sasl.mechanism=PLAIN
+
+# Confluent Schema Registry for Kafka Connect
+value.converter=io.confluent.connect.avro.AvroConverter
+value.converter.basic.auth.credentials.source=USER_INFO
+value.converter.schema.registry.basic.auth.user.info=AJJH5WDEAXUMZOCD:HNbQnmFDLu/WB4b2o7JULmjmC27c9kRPbXCmNv8kaIIlbsxY5eyCFPe14tuoLNBE
+value.converter.schema.registry.url=https://psrc-8vyvr.eu-central-1.aws.confluent.cloud

@@ -1,0 +1,12 @@
+bootstrap.servers=pkc-6ojv2.us-west4.gcp.confluent.cloud:9092
+client.bootstrap.servers=pkc-6ojv2.us-west4.gcp.confluent.cloud:9092
+security.protocol=SASL_SSL
+client.security.protocol=SASL_SSL
+sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username='7ZWBHHJ3P4WW6GRM' password='C84Lvbz0/FZEXT6fh2HqxYcYqk3xjPsgim+gwpjGIa1uavXKoJ2BqDxgawDdmp5c';
+client.sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username='7ZWBHHJ3P4WW6GRM' password='C84Lvbz0/FZEXT6fh2HqxYcYqk3xjPsgim+gwpjGIa1uavXKoJ2BqDxgawDdmp5c';
+sasl.mechanism=PLAIN
+client.sasl.mechanism=PLAIN
+
+# Confluent Schema Registry configuration for REST Proxy
+schema.registry.url=https://psrc-8vyvr.eu-central-1.aws.confluent.cloud
+client.basic.auth.credentials.source=USER_INFO

@@ -1,0 +1,5 @@
+// Confluent Schema Registry for Kafka connectors
+value.converter=io.confluent.connect.avro.AvroConverter
+value.converter.basic.auth.credentials.source=USER_INFO
+value.converter.schema.registry.basic.auth.user.info=AJJH5WDEAXUMZOCD:HNbQnmFDLu/WB4b2o7JULmjmC27c9kRPbXCmNv8kaIIlbsxY5eyCFPe14tuoLNBE
+value.converter.schema.registry.url=https://psrc-8vyvr.eu-central-1.aws.confluent.cloud
