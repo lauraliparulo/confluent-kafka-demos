@@ -25,12 +25,11 @@ import java.util.concurrent.CountDownLatch;
 public class StreamsTimestampExtractor {
 
     static class OrderTimestampExtractor implements TimestampExtractor {
-        @Override
-        public long extract(ConsumerRecord<Object, Object> record, long partitionTime) {
-            // Extract the timestamp from the value in the record
-            // and return that instead
-            return -1L;
-
+      @Override
+      public long extract(ConsumerRecord<Object, Object> record, long partitionTime) {
+            ElectronicOrder order = (ElectronicOrder)record.value();
+            System.out.println("Extracting time of " + order.getTime() + " from " + order);
+            return order.getTime();
         }
     }
 
@@ -49,15 +48,18 @@ public class StreamsTimestampExtractor {
 
         final KStream<String, ElectronicOrder> electronicStream =
                 builder.stream(inputTopic,
-                                Consumed.with(Serdes.String(), electronicSerde))
+                                Consumed.with(Serdes.String(), electronicSerde)
                         //Wire up the timestamp extractor HINT do it on the Consumed object vs configs
+                         .withTimestampExtractor(new OrderTimestampExtractor()))
                         .peek((key, value) -> System.out.println("Incoming record - key " + key + " value " + value));
 
+    //Create a tumbling window aggregation. Keep in mind that the timestamps from ElectronicOrder are what drive the window opening and closing.
         electronicStream.groupByKey().windowedBy(TimeWindows.of(Duration.ofHours(1)))
                 .aggregate(() -> 0.0,
                         (key, order, total) -> total + order.getPrice(),
                         Materialized.with(Serdes.String(), Serdes.Double()))
                 .toStream()
+       //         Use a map processor to unwrap the windowed key and return the underlying key of the aggregation, and use a peek processor to print the aggregation results to the console. Finally, write the results out to a topic.
                 .map((wk, value) -> KeyValue.pair(wk.key(), value))
                 .peek((key, value) -> System.out.println("Outgoing record - key " + key + " value " + value))
                 .to(outputTopic, Produced.with(Serdes.String(), Serdes.Double()));
