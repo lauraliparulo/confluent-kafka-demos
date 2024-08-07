@@ -43,15 +43,18 @@ public class StreamsWindows {
                         .peek((key, value) -> System.out.println("Incoming record - key " + key + " value " + value));
 
         electronicStream.groupByKey()
-                // Window the aggregation by the hour and allow for records to be up 5 minutes late
+                        // Window the aggregation by the hour and allow for records to be up 5 minutes late
+                        .windowedBy(TimeWindows.of(Duration.ofHours(1)).grace(Duration.ofMinutes(5)))
                 .aggregate(() -> 0.0,
                         (key, order, total) -> total + order.getPrice(),
                         Materialized.with(Serdes.String(), Serdes.Double()))
                 // Don't emit results until the window closes HINT suppression
+                .suppress(untilWindowCloses(unbounded()))
                 .toStream()
                 // When windowing Kafka Streams wraps the key in a Windowed class
                 // After converting the table to a stream it's a good idea to extract the
                 // Underlying key from the Windowed instance HINT: use map 
+                .map((wk, value) -> KeyValue.pair(wk.key(),value))
                 .peek((key, value) -> System.out.println("Outgoing record - key " + key + " value " + value))
                 .to(outputTopic, Produced.with(Serdes.String(), Serdes.Double()));
 
