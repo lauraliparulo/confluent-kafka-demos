@@ -39,13 +39,13 @@ public class StreamsAggregate {
 
         // Now take the electronicStream object, group by key and perform an aggregation
         // Don't forget to convert the KTable returned by the aggregate call back to a KStream using the toStream method
-        electronicStream.groupByKey().aggregate(null, null);
-
+       electronicStream.groupByKey().aggregate(() -> 0.0, (key, order, total) -> total + order.getPrice(), Materialized.with(Serdes.String(), Serdes.Double()))
         // To view the results of the aggregation consider
         // right after the toStream() method .peek((key, value) -> System.out.println("Outgoing record - key " +key +" value " + value))
-
+                    .toStream()
+                    .peek((key, value) -> System.out.println("Outgoing record - key " +key +" value " + value))
         // Finally write the results to an output topic
-        //  .to(outputTopic, Produced.with(Serdes.String(), Serdes.Double()));
+                     .to(outputTopic, Produced.with(Serdes.String(), Serdes.Double()));
 
         try (KafkaStreams kafkaStreams = new KafkaStreams(builder.build(), streamsProps)) {
             final CountDownLatch shutdownLatch = new CountDownLatch(1);
