@@ -9,7 +9,7 @@
 sasl.mechanism=PLAIN
 security.protocol=SASL_SSL
 bootstrap.servers=
-sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username='XXXX' password='XXXXXXX';
+sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username='{CLUSTER_KEY}' password='{CLUSTER_SECRET}}';
 basic.auth.credentials.source=USER_INFO
 schema.registry.url=
-basic.auth.user.info=XXXXX:XXXX
+basic.auth.user.info={SCHEMA_REGISTRY_KEY}:{SCHEMA_REGISTRY_SECRETs}
